@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import * as Hexagon from './Hexagon';
 
 class HexCanvas extends Component {
 
@@ -9,6 +10,8 @@ class HexCanvas extends Component {
 
         context.fillStyle = 'rgb(100,0,0)';
         context.fillRect(100,100,120,80);
+
+        Hexagon.drawhex(context);
     }
 
     render() {
