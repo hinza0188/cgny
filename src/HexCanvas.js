@@ -55,7 +55,8 @@ class HexCanvas extends Component {
         context.fillStyle = 'rgb(100,0,0)';
         context.fillRect(100,100,120,80);
 
-        Hexagon.drawhex(context);
+        Hexagon.drawhex(context, 100, 100, 60, "red");
+        Hexagon.drawhex(context, 40, 70, 60, "red");
     }
 
     render() {
