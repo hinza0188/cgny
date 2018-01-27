@@ -49,9 +49,9 @@ class HexCanvas extends Component {
         context.fillRect(bg.x, bg.y, bg.width, bg.height);
 
         let size = 50;
-        let colors = ["green", "black", "red", "red", "black", "green"];
-        let colors1 = ["green", "black", "red", "red", "black", "green"];
-        let colors2 = ["green", "black", "red", "red", "black", "green"];
+        let purple = ["rgb(191,212,239)", "rgb(171,185,224)", "rgb(134,152,200)", "rgb(43,68,160)", "rgb(56,81,163)", "rgb(84,102,178)"];
+        let blue = ["rgb(171,181,183)", "rgb(1,45,116)", "rgb(2,73,129)", "rgb(136,152,169)", "rgb(103,124,155)", "rgb(59,98,141)"];
+        let colors = ["rgb(255,229,196)", "rgb(108,194,189)", "rgb(90,129,158)", "rgb(255,193,168)", "rgb(246,127,125)", "rgb(124,122,161)"];
 
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
