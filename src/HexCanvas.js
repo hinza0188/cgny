@@ -49,28 +49,16 @@ class HexCanvas extends Component {
         context.fillRect(bg.x, bg.y, bg.width, bg.height);
 
         let size = 50;
-
-
-
-        /*
-        for (let i = 0; i < 5; i++) {
-            for (let j = 0; j < 5; j++) {
-                Hexagon.drawTriangleU(context, (size*2*i) - (size*(j%2)), size*j*Math.sqrt(3), size, "green");
-                Hexagon.drawTriangleD(context, (size*2*i+1) - (size*(j%2)), size*j*Math.sqrt(3), size, "black");
-            }
-        }
-        */
+        let colors = ["green", "black", "red", "red", "black", "green"];
+        let colors1 = ["green", "black", "red", "red", "black", "green"];
+        let colors2 = ["green", "black", "red", "red", "black", "green"];
 
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
-                Hexagon.drawHexagon(context, i*size*6, j*size*Math.sqrt(3)*2, size);
-                Hexagon.drawHexagon(context, (i-1/2)*size*6, (j-1/2)*size*Math.sqrt(3)*2, size);
+                Hexagon.drawHexagon(context, i*size*6, j*size*Math.sqrt(3)*2, size, colors);
+                Hexagon.drawHexagon(context, (i-1/2)*size*6, (j-1/2)*size*Math.sqrt(3)*2, size, colors);
             }
         }
-        //Hexagon.drawTriangleU(context, 0, 100, 50, "blue");
-        //Hexagon.drawTriangleD(context, 100, 100, 50, "red");
-
-        //Hexagon.drawTriangleU(context, 100,100, 50, "purple");
     }
 
     render() {
