@@ -48,15 +48,9 @@ class HexCanvas extends Component {
         context.fillStyle = bg.color;
         context.fillRect(bg.x, bg.y, bg.width, bg.height);
 
-        this.state.shapes.forEach( s => {
-            context.fillStyle = s.color;
-            context.fillRect(s.x, s.y, s.width, s.height);
-        });
-        context.fillStyle = 'rgb(100,0,0)';
-        context.fillRect(100,100,120,80);
-
-        Hexagon.drawhex(context, 100, 100, 60, "red");
-        Hexagon.drawhex(context, 40, 70, 60, "red");
+        Hexagon.drawTriangleU(context, 0, 100, 50, "blue");
+        Hexagon.drawTriangleD(context, 100, 100, 50, "red");
+        Hexagon.drawTriangleU(context, 100,100, 50, "purple");
     }
 
     render() {
