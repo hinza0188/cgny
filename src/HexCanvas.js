@@ -8,7 +8,7 @@ class HexCanvas extends Component {
         let context = canvas.getContext('2d');
 
         // background
-        context.fillStyle = 'rgb(200,200,200)';
+        context.fillStyle = 'rgb(232,236,237)';
         context.fillRect(0,0,1280,800);
 
         context.fillStyle = 'rgb(100,0,0)';
