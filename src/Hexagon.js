@@ -11,27 +11,31 @@ export function drawhex(context, x, y, size, color) {
     context.fill();
 };
 
-export function drawHexagon(context, x, y, size) {
+export function drawHexagon(context, x, y, size, colors=[]) {
+  if (!colors || colors.length !== 6) {
+    colors = ["green","black","red","red","black","green"];
+  }
+
   drawTriangleU(
     context,
     x,
     y + size*Math.sqrt(3),
     size,
-    "green"
+    colors[0]
   );
   drawTriangleD(
     context,
     x + size*2,
     y + size*Math.sqrt(3),
     size,
-    "black"
+    colors[1]
   );
   drawTriangleU(
     context,
     x + size*2,
     y + size*Math.sqrt(3),
     size,
-    "red"
+    colors[2]
   );
 
   // bottom 3
@@ -40,21 +44,21 @@ export function drawHexagon(context, x, y, size) {
     x + size,
     y + (2)*size*Math.sqrt(3),
     size,
-    "red"
+    colors[3]
   );
   drawTriangleU(
     context,
     x + size,
     y + (2)*size*Math.sqrt(3),
     size,
-    "black"
+    colors[4]
   );
   drawTriangleD(
     context,
     x + size*3,
     y + (2)*size*Math.sqrt(3),
     size,
-    "green"
+    colors[5]
   );
 
 };
