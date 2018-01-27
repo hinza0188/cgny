@@ -8,7 +8,7 @@
 
 # CGNY Brickhack 2018
 
-We're going to make Conway's Game of Life in Hexagon.
+We're going to make an interactive Conway's Game of Life in Hexagon.
 
 From wikipedia:
 > The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
