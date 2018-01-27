@@ -51,15 +51,20 @@ class HexCanvas extends Component {
         let size = 50;
 
 
-        for(var i = 0; i<=15; i++){
-            for(var j=0; j<=15; j++){
-                if (j%2 === 1) {
-                    Hexagon.drawTriangleU(context, (size*2*i), size*j*Math.sqrt(3), size, "green");
-                    Hexagon.drawTriangleD(context, (size*2*i+1), size*j*Math.sqrt(3), size, "black");
-                } else {
-                    Hexagon.drawTriangleU(context, (size*2*i) - (size), size*j*Math.sqrt(3), size, "green");
-                    Hexagon.drawTriangleD(context, (size*2*i+1) - (size), size*j*Math.sqrt(3), size, "black");
-                }
+
+        /*
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                Hexagon.drawTriangleU(context, (size*2*i) - (size*(j%2)), size*j*Math.sqrt(3), size, "green");
+                Hexagon.drawTriangleD(context, (size*2*i+1) - (size*(j%2)), size*j*Math.sqrt(3), size, "black");
+            }
+        }
+        */
+
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                Hexagon.drawHexagon(context, i*size*6, j*size*Math.sqrt(3)*2, size);
+                Hexagon.drawHexagon(context, (i-1/2)*size*6, (j-1/2)*size*Math.sqrt(3)*2, size);
             }
         }
         //Hexagon.drawTriangleU(context, 0, 100, 50, "blue");
