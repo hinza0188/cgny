@@ -7,6 +7,10 @@ class HexCanvas extends Component {
         let canvas = ReactDOM.findDOMNode(this.refs.hexCanvas);
         let context = canvas.getContext('2d');
 
+        // background
+        context.fillStyle = 'rgb(200,200,200)';
+        context.fillRect(0,0,1280,800);
+
         context.fillStyle = 'rgb(100,0,0)';
         context.fillRect(100,100,120,80);
     }
