@@ -36,7 +36,13 @@ class HexCanvas extends Component {
                     height: 120,
                 },
             ],
+            x: 0,
+            y: 0,
         };
+    }
+
+    _onMouseMove(e) {
+        this.SetState({ x:e.screenX, y:e.screenY});
     }
 
     componentDidMount() {
@@ -65,12 +71,14 @@ class HexCanvas extends Component {
     }
 
     render() {
+        const {x, y} = this.state;
         return (
             <div className="hex-canvas">
-                <canvas id="hex-canvas" ref="hexCanvas" width="100%" height="100%">
-
-
-                </canvas>
+                <canvas id="hex-canvas" ref="hexCanvas" width="100%" height="100%"
+                />
+                <div onMouseMove={this._onMouseMove.bind(this)}>
+                    <h1>Mouse coordinate: {x} {y}</h1>
+                </div>
             </div>
         );
     }
