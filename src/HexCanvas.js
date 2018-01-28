@@ -40,14 +40,11 @@ class HexCanvas extends Component {
         let closest = this.findClosest(x,y);
 
         if (!!closest) {
+            let newShapes = {...this.state.shapes};
+            newShapes[closest].color = this.colors;
+
             this.setState({
-                shapes: {
-                    ...this.state.shapes,
-                    [closest]: {
-                        ...this.state.shapes[closest],
-                        color: this.colors,
-                    }
-                }
+                shapes: newShapes,
             });
         }
     }
@@ -165,20 +162,20 @@ class HexCanvas extends Component {
             let colorGrey = 0;
             let colorColor = 0;
             
+            (!n[0] || n[0] === grey ) ? colorGrey++ : colorColor++;
+            (!n[1] || n[1] === grey ) ? colorGrey++ : colorColor++;
+            (!n[2] || n[2] === grey ) ? colorGrey++ : colorColor++;
+            (!n[3] || n[3] === grey ) ? colorGrey++ : colorColor++;
+            (!n[4] || n[4] === grey ) ? colorGrey++ : colorColor++;
+            (!n[5] || n[5] === grey ) ? colorGrey++ : colorColor++;
 
-            (n[0] === grey ) ? colorGrey++ : colorColor++;
-            (n[1] === grey ) ? colorGrey++ : colorColor++;
-            (n[2] === grey ) ? colorGrey++ : colorColor++;
-            (n[3] === grey ) ? colorGrey++ : colorColor++;
-            (n[4] === grey ) ? colorGrey++ : colorColor++;
-            (n[5] === grey ) ? colorGrey++ : colorColor++;
 
             if((colorColor >3 || colorColor <2) && s.color !==grey)
             {
                 newShapes[k].color = grey;
             }            
             
-            if((colorColor ===3) && s.color === grey)
+            if((colorColor ===3) && (!s.color || s.color === grey))
             {
                 newShapes[k].color = this.colors;
             }
