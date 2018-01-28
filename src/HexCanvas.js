@@ -15,8 +15,8 @@ class HexCanvas extends Component {
                 color: 'rgb(232,236,237)',
                 x: 0,
                 y: 0,
-                width: 1000,
-                height: 800,
+                width: window.innerWidth,
+                height: window.innerHeight,
             },
             shapes: [
                 {
@@ -42,6 +42,9 @@ class HexCanvas extends Component {
     componentDidMount() {
         let canvas = ReactDOM.findDOMNode(this.refs.hexCanvas);
         let context = canvas.getContext('2d');
+        // sizing
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
         // background
         let bg = this.state.background;
@@ -64,7 +67,7 @@ class HexCanvas extends Component {
     render() {
         return (
             <div className="hex-canvas">
-                <canvas id="hex-canvas" ref="hexCanvas" width="1000" height="800">
+                <canvas id="hex-canvas" ref="hexCanvas" width="100%" height="100%">
 
 
                 </canvas>
