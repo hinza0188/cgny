@@ -40,7 +40,11 @@ class HexCanvas extends Component {
 
         if (!!closest) {
             let newShapes = {...this.state.shapes};
-            newShapes[closest].color = this.colors;
+            if (newShapes[closest].color && newShapes[closest].color[0] == this.colors[0]) {
+                newShapes[closest].color = null;
+            } else {
+                newShapes[closest].color = this.colors;
+            }
 
             this.setState({
                 shapes: newShapes,
@@ -79,7 +83,7 @@ class HexCanvas extends Component {
 
     componentDidMount() {
         let shapes = {};
-        let size = 24;
+        let size = 12;
         let canvasWidth = window.innerWidth;
         let canvasHeight = window.innerHeight;
 
@@ -180,12 +184,12 @@ class HexCanvas extends Component {
                 (!n[5] || n[5] == grey ) ? colorGrey++ : colorColor++;
 
 
-                if((colorColor >3 || colorColor <2) && s.color !==grey)
+                if((colorColor >= 3 || colorColor <= 2) && s.color !==grey)
                 {
                     newShapes[k].color = grey;
                 }            
                 
-                if((colorColor ===3) && (!s.color || s.color === grey))
+                if(( colorColor === 2) && (!s.color || s.color === grey))
                 {
                     newShapes[k].color = this.colors;
                 }
