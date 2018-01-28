@@ -152,6 +152,60 @@ class HexCanvas extends Component {
 
         this.state.shapeOrder.forEach( k => {
             let s = this.state.shapes[k];
+
+            let n = this.findNeighbors(s);
+            //let n = "grey, grey, grey, grey, grey, grey"
+            let colorGrey = 0;
+            let colorColor = 0;
+            
+            let grey = 'rgb(232,236,237)';
+
+            (n[0] === grey ) ? colorGrey++ : colorColor++;
+            (n[1] === grey ) ? colorGrey++ : colorColor++;
+            (n[2] === grey ) ? colorGrey++ : colorColor++;
+            (n[3] === grey ) ? colorGrey++ : colorColor++;
+            (n[4] === grey ) ? colorGrey++ : colorColor++;
+            (n[5] === grey ) ? colorGrey++ : colorColor++;
+
+            if((colorColor >3 || colorColor <2) && s.color !==grey)
+            {
+                s.color = grey;   
+            }            
+            
+            if((colorColor ===3) && s.color === grey)
+            {
+                s.color = this.colors;
+            }
+
+
+            /**
+            
+            if (n[0] == grey && n[1] != grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey ) //1 grey 5 color, dies from overpopulation
+            {
+                s.color = grey;    
+            }
+            else if(n[0] == grey && n[1] == grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey) //2 grey 4 color, dies from overpopulation
+            {
+                s.color = grey; 
+            }
+            else if(n[0] == grey && n[1] != grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey)
+            {
+
+            }
+            else if(n[0] == grey && n[1] != grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey)
+            {
+
+            }
+            else if (n[0] == grey && n[1] != grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey)
+            {
+
+            }
+
+            **/
+
+
+
+
             Hexagon.drawHexagon(this.state.context, s.x, s.y, s.size, s.color);
         });
     }
