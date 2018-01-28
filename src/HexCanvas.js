@@ -23,7 +23,9 @@ class HexCanvas extends Component {
             x:0,
             y:0,
         };
+
         this.drawShapes = this.drawShapes.bind(this);
+        this.updateColors = this.updateColors.bind(this);
         this.findClosest = this.findClosest.bind(this);
         this.findNeighbors = this.findNeighbors.bind(this);
     }
@@ -114,7 +116,8 @@ class HexCanvas extends Component {
 
         // initial draw
         setTimeout(this.drawShapes, 10);
-        this.timer = setInterval( this.drawShapes, 50 );
+        this.drawTimer = setInterval( this.drawShapes, 50 );
+        this.colorTimer = setInterval( this.updateColors, 5000 );
     }
 
     findNeighbors(shape) {
@@ -136,29 +139,18 @@ class HexCanvas extends Component {
         return closestNeighbors;
     }
 
-    drawShapes() {
-        let canvas = ReactDOM.findDOMNode(this.refs.hexCanvas);
-        let context = canvas.getContext('2d');
-        // sizing
-        
-        canvas.width = this.state.canvasWidth;
-        canvas.height = this.state.canvasHeight;
-
-        this.setState({
-            canvas,
-            context,
-            time: this.state.time + 1,
-        });
-
+    updateColors() {
+        let newShapes = {...this.state.shapes};
         this.state.shapeOrder.forEach( k => {
             let s = this.state.shapes[k];
 
-            let n = this.findNeighbors(s);
-            //let n = "grey, grey, grey, grey, grey, grey"
+            // findneighbors is too slow will fix
+            //let n = this.findNeighbors(s);
+            let grey = 'rgb(232,236,237)';
+            let n = [grey, grey, grey, grey, grey, grey];
             let colorGrey = 0;
             let colorColor = 0;
             
-            let grey = 'rgb(232,236,237)';
 
             (n[0] === grey ) ? colorGrey++ : colorColor++;
             (n[1] === grey ) ? colorGrey++ : colorColor++;
@@ -169,14 +161,13 @@ class HexCanvas extends Component {
 
             if((colorColor >3 || colorColor <2) && s.color !==grey)
             {
-                s.color = grey;   
+                newShapes[k].color = grey;
             }            
             
             if((colorColor ===3) && s.color === grey)
             {
-                s.color = this.colors;
+                newShapes[k].color = this.colors;
             }
-
 
             /**
             
@@ -202,10 +193,28 @@ class HexCanvas extends Component {
             }
 
             **/
+        });
 
+        this.setState({
+            time: this.state.time + 1,
+            shapes: newShapes
+        });
+    }
 
+    drawShapes() {
+        let canvas = ReactDOM.findDOMNode(this.refs.hexCanvas);
+        let context = canvas.getContext('2d');
+        // sizing
+        canvas.width = this.state.canvasWidth;
+        canvas.height = this.state.canvasHeight;
 
+        this.setState({
+            canvas,
+            context,
+        });
 
+        this.state.shapeOrder.forEach( k => {
+            let s = this.state.shapes[k];
             Hexagon.drawHexagon(this.state.context, s.x, s.y, s.size, s.color);
         });
     }
