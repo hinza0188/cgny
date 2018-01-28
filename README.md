@@ -14,3 +14,10 @@ From wikipedia:
 > The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
 
 > The "game" is a zero-player game, meaning that its evolution is determined by its initial state, requiring no further input. One interacts with the Game of Life by creating an initial configuration and observing how it evolves, or, for advanced "players", by creating patterns with particular properties. The Game has been reprogrammed multiple times in various coding languages.
+
+# Instruction
+1. Type "npm install"
+2. Type "npm start" 
+3. Open web browser, and go to https://localhost:3000
+4. Click on hexagon tiles to populate the cellular automaton
+5. Enjoy
