@@ -64,8 +64,6 @@ class HexCanvas extends Component {
         }
 
         if (!!closest) {
-            console.log(closest);
-            console.log(this.state.shapes[closest]);
             this.setState({
                 shapes: {
                     ...this.state.shapes,
@@ -80,7 +78,7 @@ class HexCanvas extends Component {
 
     componentDidMount() {
         let shapes = {};
-        let size = 50;
+        let size = 12;
         let canvasWidth = window.innerWidth;
         let canvasHeight = window.innerHeight;
 
