@@ -87,11 +87,11 @@ class HexCanvas extends Component {
         const {x, y} = this.state;
         return (
             <div className="hex-canvas">
-                <p> {this.state.time} </p>
+                <p>Current Stage: {this.state.time} </p>
+                <p>Mouse Coordinates: ({x}, {y})</p>
                 <canvas id="hex-canvas" ref="hexCanvas" width="100%" height="100%"
                     onMouseMove={this._onMouseMove.bind(this)}
                 />
-                <h1>Mouse coordinate: {x} {y}</h1>
             </div>
         );
     }
