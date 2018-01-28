@@ -41,42 +41,58 @@ class HexCanvas extends Component {
         let x = e.clientX;
         let y = (e.clientY - offset.top);
 
-        this.state.shapeOrder.forEach( k => {
-            let s = this.state.shapes[k];
-            let dist = Math.sqrt(
-                Math.pow((s.x - x),2) +
-                Math.pow((s.y - y),2)
-            );
-            if (dist < this.state.size) {
-                let key = ''+s.x+','+s.y;
-                this.setState({
-                    shapes: {
-                        ...this.state.shapes,
-                        [key]: {
-                            ...this.state.shapes[key],
-                            color: this.colors,
-                        }
+        let closest = null;
+        let closestDist = null;
+        for (let i = Math.floor(x-this.state.size*2); i < Math.floor(x+this.state.size*2); i++) {
+            for (let j = Math.floor(y-this.state.size*2); j < Math.floor(y+this.state.size*2); j++) {
+                let k = ''+i+','+j;
+                let s = this.state.shapes[k];
+                if (!!s) {
+
+                    let dist = Math.sqrt(
+                        Math.pow((s.x - x),2) +
+                        Math.pow((s.y - y),2)
+                    );
+                    if (dist < this.state.size*3) {
+                        if (!closestDist || closestDist > dist) {
+                            closest = k;
+                            closestDist = dist;
+                        };
                     }
-                });
+                }
             }
-        });
+        }
+
+        if (!!closest) {
+            console.log(closest);
+            console.log(this.state.shapes[closest]);
+            this.setState({
+                shapes: {
+                    ...this.state.shapes,
+                    [closest]: {
+                        ...this.state.shapes[closest],
+                        color: this.colors,
+                    }
+                }
+            });
+        }
     }
 
     componentDidMount() {
         let shapes = {};
-        let size = 10;
+        let size = 50;
         let canvasWidth = window.innerWidth;
         let canvasHeight = window.innerHeight;
 
-        for (let i = 0; i < canvasWidth/(size*3); i++) {
-            for (let j = 0; j < canvasHeight/(size*3); j++) {
+        for (let i = 0; i < canvasWidth/(size*2); i++) {
+            for (let j = 0; j < canvasHeight/(size*2); j++) {
                 let n1 = {
                     x: i*size*6,
                     y: j*size*Math.sqrt(3)*2,
                     size: size,
                     color: null,
                 };
-                let n1key = ''+n1.x+','+n1.y;
+                let n1key = ''+Math.floor(n1.x)+','+Math.floor(n1.y);
                 this.state.shapeOrder.push(n1key);
                 shapes[n1key] = n1;
 
@@ -86,7 +102,7 @@ class HexCanvas extends Component {
                     size: size,
                     color: null,
                 };
-                let n2key = ''+n2.x+','+n2.y;
+                let n2key = ''+Math.floor(n2.x)+','+Math.floor(n2.y);
                 this.state.shapeOrder.push(n2key);
                 shapes[n2key] = n2;
             }
@@ -101,7 +117,7 @@ class HexCanvas extends Component {
 
         // initial draw
         setTimeout(this.drawShapes, 10);
-        this.timer = setInterval( this.drawShapes, 5000 );
+        this.timer = setInterval( this.drawShapes, 50 );
     }
 
     drawShapes() {

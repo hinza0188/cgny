@@ -19,22 +19,22 @@ export function drawHexagon(context, x, y, size, colors=[]) {
   // top3
   drawTriangleU(
     context,
-    x,
-    y + size*Math.sqrt(3),
+    x - size*2,
+    y + 0*size*Math.sqrt(3),
     size,
     colors[0]
   );
   drawTriangleD(
     context,
-    x + size*2,
-    y + size*Math.sqrt(3),
+    x,
+    y + 0*size*Math.sqrt(3),
     size,
     colors[1]
   );
   drawTriangleU(
     context,
-    x + size*2,
-    y + size*Math.sqrt(3),
+    x,
+    y + 0*size*Math.sqrt(3),
     size,
     colors[2]
   );
@@ -42,22 +42,22 @@ export function drawHexagon(context, x, y, size, colors=[]) {
   // bottom 3
   drawTriangleD(
     context,
-    x + size,
-    y + (2)*size*Math.sqrt(3),
+    x - size,
+    y + (1)*size*Math.sqrt(3),
     size,
     colors[3]
   );
   drawTriangleU(
     context,
-    x + size,
-    y + (2)*size*Math.sqrt(3),
+    x - size,
+    y + (1)*size*Math.sqrt(3),
     size,
     colors[4]
   );
   drawTriangleD(
     context,
-    x + size*3,
-    y + (2)*size*Math.sqrt(3),
+    x + size,
+    y + (1)*size*Math.sqrt(3),
     size,
     colors[5]
   );
@@ -92,21 +92,21 @@ export function drawBorder(context, x, y, size) {
     let rectHeight = Math.sqrt(3)*size+2*rectWidth;
 
     //context.fillStyle = "white";
-    context.translate(x+size,y);
+    context.translate(x-size,y-Math.sqrt(3)*size);
     context.rotate(30 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.translate(0,0);
 
     //context.fillStyle = "blue";
-    context.translate(x+3*size,y);
+    context.translate(x+size,y-Math.sqrt(3)*size);
     context.rotate(90 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.translate(0,0);
 
     //context.fillStyle = "orange";
-    context.translate(x+4*size,y+Math.sqrt(3)*size);
+    context.translate(x+2*size,y);
     context.rotate(150 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
@@ -114,21 +114,21 @@ export function drawBorder(context, x, y, size) {
 
 
     //context.fillStyle = "purple";
-    context.translate(x,y+Math.sqrt(3)*size);
+    context.translate(x-size*2,y);
     context.rotate(-30 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.translate(0,0);
 
     //context.fillStyle = "grey";
-    context.translate(x+size,y+2*Math.sqrt(3)*size);
+    context.translate(x-size,y+Math.sqrt(3)*size);
     context.rotate(-90 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.translate(0,0);
 
     //context.fillStyle = "pink";
-    context.translate(x+3*size,y+2*Math.sqrt(3)*size);
+    context.translate(x+size,y+Math.sqrt(3)*size);
     context.rotate(210 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
