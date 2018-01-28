@@ -28,7 +28,6 @@ class HexCanvas extends Component {
         this.updateColors = this.updateColors.bind(this);
         this.findClosest = this.findClosest.bind(this);
         this.findNeighbors = this.findNeighbors.bind(this);
-        this.assignNeighbors = this.assignNeighbors.bind(this);
     }
 
     _onClick(e) {
@@ -49,11 +48,14 @@ class HexCanvas extends Component {
         }
     }
 
-    findClosest(x,y) {
+    findClosest(x,y,span=null) {
         let closest = null;
         let closestDist = null;
-        for (let i = Math.floor(x-this.state.size*2); i < Math.floor(x+this.state.size*2); i++) {
-            for (let j = Math.floor(y-this.state.size*2); j < Math.floor(y+this.state.size*2); j++) {
+        if (span == null){
+            span = this.state.size*2;
+        }
+        for (let i = Math.floor(x-span); i < Math.floor(x+span); i++) {
+            for (let j = Math.floor(y-span); j < Math.floor(y+span); j++) {
                 let k = ''+i+','+j;
                 let s = this.state.shapes[k];
                 if (!!s) {
@@ -77,7 +79,7 @@ class HexCanvas extends Component {
 
     componentDidMount() {
         let shapes = {};
-        let size = 12;
+        let size = 24;
         let canvasWidth = window.innerWidth;
         let canvasHeight = window.innerHeight;
 
@@ -105,12 +107,6 @@ class HexCanvas extends Component {
             }
         }
 
-        this.state.shapeOrder.forEach( k => {
-            let s = shapes[k];
-            let neighbors = this.assignNeighbors(s);
-            s.neighbors = neighbors;
-        })
-
         this.setState({
             shapes,
             size,
@@ -121,26 +117,39 @@ class HexCanvas extends Component {
         // initial draw
         setTimeout(this.drawShapes, 10);
         this.drawTimer = setInterval( this.drawShapes, 50 );
-        this.colorTimer = setInterval( this.updateColors, 5000 );
-    }
+        this.colorTimer = setInterval( this.updateColors, 3000 );
 
-    assignNeighbors(shape) {
-        let x = shape.x;
-        let y = shape.y;
+        // assign neighbors
+        setTimeout(() => {
+            let newShapes = {...this.state.shapes};
 
-        let size3 = 3*this.state.size;
-        let sizeSqrt3 = Math.sqrt(3)*this.state.size;
+            this.state.shapeOrder.forEach( k => {
+                let shape = newShapes[k];
+                let x = shape.x;
+                let y = shape.y;
 
-        let closestNeighbors = [
-            this.findClosest((x - size3), (y - sizeSqrt3)),
-            this.findClosest(x, (y - 2*sizeSqrt3)),
-            this.findClosest((x + size3), (y - sizeSqrt3)),
-            this.findClosest((x + size3), (y + sizeSqrt3)),
-            this.findClosest(x, (y + 2*sizeSqrt3)),
-            this.findClosest((x - size3), (y + sizeSqrt3)),
-        ];
+                let size3 = 3*this.state.size;
+                let sizeSqrt3 = Math.sqrt(3)*this.state.size;
 
-        return closestNeighbors;
+                let closestNeighbors = [
+                    this.findClosest((x - size3), (y - sizeSqrt3), 5),
+                    this.findClosest(x, (y - 2*sizeSqrt3), 5),
+                    this.findClosest((x + size3), (y - sizeSqrt3), 5),
+                    this.findClosest((x + size3), (y + sizeSqrt3), 5),
+                    this.findClosest(x, (y + 2*sizeSqrt3), 5),
+                    this.findClosest((x - size3), (y + sizeSqrt3), 5),
+                ];
+
+                newShapes[k].neighbors = closestNeighbors;
+            });
+
+            this.setState({
+                shapes: newShapes,
+            });
+
+        }, 100);
+
+
     }
 
     findNeighbors(shape) {
@@ -156,28 +165,30 @@ class HexCanvas extends Component {
         this.state.shapeOrder.forEach( k => {
             let s = this.state.shapes[k];
 
-            let n = this.findNeighbors(s);
+            let n = this.findNeighbors(s).map(nbr => !!nbr ? nbr.color : null);
             let grey = 'rgb(232,236,237)';
             //let n = [grey, grey, grey, grey, grey, grey];
             let colorGrey = 0;
             let colorColor = 0;
-            
-            (!n[0] || n[0] === grey ) ? colorGrey++ : colorColor++;
-            (!n[1] || n[1] === grey ) ? colorGrey++ : colorColor++;
-            (!n[2] || n[2] === grey ) ? colorGrey++ : colorColor++;
-            (!n[3] || n[3] === grey ) ? colorGrey++ : colorColor++;
-            (!n[4] || n[4] === grey ) ? colorGrey++ : colorColor++;
-            (!n[5] || n[5] === grey ) ? colorGrey++ : colorColor++;
+            if (!!n) {
+
+                (!n[0] || n[0] == grey ) ? colorGrey++ : colorColor++;
+                (!n[1] || n[1] == grey ) ? colorGrey++ : colorColor++;
+                (!n[2] || n[2] == grey ) ? colorGrey++ : colorColor++;
+                (!n[3] || n[3] == grey ) ? colorGrey++ : colorColor++;
+                (!n[4] || n[4] == grey ) ? colorGrey++ : colorColor++;
+                (!n[5] || n[5] == grey ) ? colorGrey++ : colorColor++;
 
 
-            if((colorColor >3 || colorColor <2) && s.color !==grey)
-            {
-                newShapes[k].color = grey;
-            }            
-            
-            if((colorColor ===3) && (!s.color || s.color === grey))
-            {
-                newShapes[k].color = this.colors;
+                if((colorColor >3 || colorColor <2) && s.color !==grey)
+                {
+                    newShapes[k].color = grey;
+                }            
+                
+                if((colorColor ===3) && (!s.color || s.color === grey))
+                {
+                    newShapes[k].color = this.colors;
+                }
             }
 
             /**
