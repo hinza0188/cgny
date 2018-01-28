@@ -55,8 +55,8 @@ class HexCanvas extends Component {
 
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 7; j++) {
-                Hexagon.drawHexagon(context, i*size*6, j*size*Math.sqrt(3)*2, size);
-                Hexagon.drawHexagon(context, (i-1/2)*size*6, (j-1/2)*size*Math.sqrt(3)*2, size);
+                Hexagon.drawHexagon(context, i*size*6, j*size*Math.sqrt(3)*2, size, colors);
+                Hexagon.drawHexagon(context, (i-1/2)*size*6, (j-1/2)*size*Math.sqrt(3)*2, size, colors);
             }
         }
     }
