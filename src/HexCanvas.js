@@ -24,6 +24,8 @@ class HexCanvas extends Component {
             y:0,
         };
         this.drawShapes = this.drawShapes.bind(this);
+        this.findClosest = this.findClosest.bind(this);
+        this.findNeighbors = this.findNeighbors.bind(this);
     }
 
     _onClick(e) {
@@ -32,6 +34,22 @@ class HexCanvas extends Component {
         let x = e.clientX;
         let y = (e.clientY - offset.top);
 
+        let closest = this.findClosest(x,y);
+
+        if (!!closest) {
+            this.setState({
+                shapes: {
+                    ...this.state.shapes,
+                    [closest]: {
+                        ...this.state.shapes[closest],
+                        color: this.colors,
+                    }
+                }
+            });
+        }
+    }
+
+    findClosest(x,y) {
         let closest = null;
         let closestDist = null;
         for (let i = Math.floor(x-this.state.size*2); i < Math.floor(x+this.state.size*2); i++) {
@@ -54,17 +72,7 @@ class HexCanvas extends Component {
             }
         }
 
-        if (!!closest) {
-            this.setState({
-                shapes: {
-                    ...this.state.shapes,
-                    [closest]: {
-                        ...this.state.shapes[closest],
-                        color: this.colors,
-                    }
-                }
-            });
-        }
+        return closest;
     }
 
     componentDidMount() {
@@ -107,6 +115,25 @@ class HexCanvas extends Component {
         // initial draw
         setTimeout(this.drawShapes, 10);
         this.timer = setInterval( this.drawShapes, 50 );
+    }
+
+    findNeighbors(shape) {
+        let x = shape.x;
+        let y = shape.y;
+
+        let size3 = 3*this.state.size;
+        let sizeSqrt3 = Math.sqrt(3)*this.state.size;
+
+        let closestNeighbors = [
+            this.state.shapes[this.findClosest((x - size3), (y - sizeSqrt3))],
+            this.state.shapes[this.findClosest(x, (y - 2*sizeSqrt3))],
+            this.state.shapes[this.findClosest((x + size3), (y - sizeSqrt3))],
+            this.state.shapes[this.findClosest((x + size3), (y + sizeSqrt3))],
+            this.state.shapes[this.findClosest(x, (y + 2*sizeSqrt3))],
+            this.state.shapes[this.findClosest((x - size3), (y + sizeSqrt3))],
+        ];
+
+        return closestNeighbors;
     }
 
     drawShapes() {

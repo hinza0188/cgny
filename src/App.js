@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './hex_logo.svg';
 import './styles/App.css';
 import HexCanvas from './HexCanvas';
 
