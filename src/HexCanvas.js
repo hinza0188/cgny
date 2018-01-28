@@ -26,7 +26,11 @@ class HexCanvas extends Component {
         this.drawShapes = this.drawShapes.bind(this);
     }
 
-    initializeState() {
+    _onMouseMove(e) {
+        this.setState({ x:e.screenX, y:e.screenY});
+    }
+
+    componentDidMount() {
         let shapes = [];
         let size = 10;
         let canvasWidth = window.innerWidth;
@@ -50,20 +54,14 @@ class HexCanvas extends Component {
         }
 
         this.setState({
-            shapes: shapes,
+            shapes,
             size,
             canvasWidth,
             canvasHeight,
         });
-    }
 
-    _onMouseMove(e) {
-        this.setState({ x:e.screenX, y:e.screenY});
-    }
-
-    componentDidMount() {
-        this.initializeState();
-        this.drawShapes();
+        // initial draw
+        setTimeout(this.drawShapes, 10);
         this.timer = setInterval( this.drawShapes, 5000 );
     }
 
