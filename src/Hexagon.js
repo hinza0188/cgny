@@ -13,7 +13,8 @@ export function drawhex(context, x, y, size, color) {
 
 export function drawHexagon(context, x, y, size, colors=[]) {
   if (!colors || colors.length !== 6) {
-    colors = ["green","black","red","red","black","green"];
+    // default background colors
+    colors = ["grey","grey","grey","grey","grey","grey"];
   }
   // top3
   drawTriangleU(
