@@ -5,7 +5,6 @@ import * as Hexagon from './Hexagon';
 class HexCanvas extends Component {
     constructor(props) {
         super(props);
-
         this.purple = ["rgb(191,212,239)", "rgb(171,185,224)", "rgb(134,152,200)", "rgb(43,68,160)", "rgb(56,81,163)", "rgb(84,102,178)"];
         this.blue = ["rgb(171,181,183)", "rgb(1,45,116)", "rgb(2,73,129)", "rgb(136,152,169)", "rgb(103,124,155)", "rgb(59,98,141)"];
         this.colors = ["rgb(255,229,196)", "rgb(108,194,189)", "rgb(90,129,158)", "rgb(255,193,168)", "rgb(246,127,125)", "rgb(124,122,161)"];
@@ -26,14 +25,6 @@ class HexCanvas extends Component {
         };
         this.drawShapes = this.drawShapes.bind(this);
     }
-
-    /*
-    _onMouseMove(e) {
-        let canvas = ReactDOM.findDOMNode(this.refs.hexCanvas);
-        let offset = canvas.getBoundingClientRect();
-        this.setState({ x:e.clientX, y:e.clientY-offset.top});
-    }
-    */
 
     _onClick(e) {
         let canvas = ReactDOM.findDOMNode(this.refs.hexCanvas);
@@ -139,13 +130,10 @@ class HexCanvas extends Component {
     }
 
     render() {
-        const {x, y} = this.state;
         return (
             <div className="hex-canvas">
-                <p>Current Stage: {this.state.time} </p>
-                <p>Mouse Coordinates: ({x}, {y})</p>
+                <h1>Current Stage: {this.state.time}</h1>
                 <canvas id="hex-canvas" ref="hexCanvas" width="100%" height="100%"
-                    //onMouseMove={this._onMouseMove.bind(this)}
                     onClick={this._onClick.bind(this)}
                 />
             </div>

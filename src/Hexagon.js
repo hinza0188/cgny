@@ -20,21 +20,21 @@ export function drawHexagon(context, x, y, size, colors=[]) {
   drawTriangleU(
     context,
     x - size*2,
-    y + 0*size*Math.sqrt(3),
+    y,
     size,
     colors[0]
   );
   drawTriangleD(
     context,
     x,
-    y + 0*size*Math.sqrt(3),
+    y,
     size,
     colors[1]
   );
   drawTriangleU(
     context,
     x,
-    y + 0*size*Math.sqrt(3),
+    y,
     size,
     colors[2]
   );
@@ -43,21 +43,21 @@ export function drawHexagon(context, x, y, size, colors=[]) {
   drawTriangleD(
     context,
     x - size,
-    y + (1)*size*Math.sqrt(3),
+    y + size*Math.sqrt(3),
     size,
     colors[3]
   );
   drawTriangleU(
     context,
     x - size,
-    y + (1)*size*Math.sqrt(3),
+    y + size*Math.sqrt(3),
     size,
     colors[4]
   );
   drawTriangleD(
     context,
     x + size,
-    y + (1)*size*Math.sqrt(3),
+    y + size*Math.sqrt(3),
     size,
     colors[5]
   );
@@ -68,7 +68,6 @@ export function drawHexagon(context, x, y, size, colors=[]) {
 
 export function drawTriangleU(context, x, y, size, color) {
     context.fillStyle = color;
-
     context.beginPath();
     context.moveTo(x,y);
     context.lineTo(x+size, y - Math.sqrt(3)*size);
@@ -78,7 +77,6 @@ export function drawTriangleU(context, x, y, size, color) {
 
 export function drawTriangleD(context, x, y, size, color) {
     context.fillStyle = color;
-
     context.beginPath();
     context.moveTo(x,y);
     context.lineTo(x-size, y - Math.sqrt(3)*size);
@@ -88,47 +86,46 @@ export function drawTriangleD(context, x, y, size, color) {
 
 export function drawBorder(context, x, y, size) {
     context.fillStyle = "white";
-    let rectWidth = size/8;
-    let rectHeight = Math.sqrt(3)*size+2*rectWidth;
+    let rectWidth = (size/8);
+    let rectHeight = (Math.sqrt(3)*size) + (2*rectWidth);
 
     //context.fillStyle = "white";
-    context.translate(x-size,y-Math.sqrt(3)*size);
+    context.translate(x-size,y-(Math.sqrt(3)*size));
     context.rotate(30 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.translate(0,0);
 
     //context.fillStyle = "blue";
-    context.translate(x+size,y-Math.sqrt(3)*size);
+    context.translate(x+size,y-(Math.sqrt(3)*size));
     context.rotate(90 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.translate(0,0);
 
     //context.fillStyle = "orange";
-    context.translate(x+2*size,y);
+    context.translate(x+(2*size),y);
     context.rotate(150 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.translate(0,0);
 
-
     //context.fillStyle = "purple";
-    context.translate(x-size*2,y);
+    context.translate(x-(size*2),y);
     context.rotate(-30 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.translate(0,0);
 
     //context.fillStyle = "grey";
-    context.translate(x-size,y+Math.sqrt(3)*size);
+    context.translate(x-size,y+(Math.sqrt(3)*size));
     context.rotate(-90 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.translate(0,0);
 
     //context.fillStyle = "pink";
-    context.translate(x+size,y+Math.sqrt(3)*size);
+    context.translate(x+size,y+(Math.sqrt(3)*size));
     context.rotate(210 * Math.PI / 180);
     context.fillRect(-1,-1,rectWidth,rectHeight);
     context.setTransform(1, 0, 0, 1, 0, 0);
