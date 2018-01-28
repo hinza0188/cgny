@@ -23,7 +23,9 @@ class HexCanvas extends Component {
             x:0,
             y:0,
         };
+
         this.drawShapes = this.drawShapes.bind(this);
+        this.updateColors = this.updateColors.bind(this);
         this.findClosest = this.findClosest.bind(this);
         this.findNeighbors = this.findNeighbors.bind(this);
     }
@@ -37,23 +39,27 @@ class HexCanvas extends Component {
         let closest = this.findClosest(x,y);
 
         if (!!closest) {
+            let newShapes = {...this.state.shapes};
+            if (newShapes[closest].color && newShapes[closest].color[0] == this.colors[0]) {
+                newShapes[closest].color = null;
+            } else {
+                newShapes[closest].color = this.colors;
+            }
+
             this.setState({
-                shapes: {
-                    ...this.state.shapes,
-                    [closest]: {
-                        ...this.state.shapes[closest],
-                        color: this.colors,
-                    }
-                }
+                shapes: newShapes,
             });
         }
     }
 
-    findClosest(x,y) {
+    findClosest(x,y,span=null) {
         let closest = null;
         let closestDist = null;
-        for (let i = Math.floor(x-this.state.size*2); i < Math.floor(x+this.state.size*2); i++) {
-            for (let j = Math.floor(y-this.state.size*2); j < Math.floor(y+this.state.size*2); j++) {
+        if (span == null){
+            span = this.state.size*2;
+        }
+        for (let i = Math.floor(x-span); i < Math.floor(x+span); i++) {
+            for (let j = Math.floor(y-span); j < Math.floor(y+span); j++) {
                 let k = ''+i+','+j;
                 let s = this.state.shapes[k];
                 if (!!s) {
@@ -114,40 +120,123 @@ class HexCanvas extends Component {
 
         // initial draw
         setTimeout(this.drawShapes, 10);
-        this.timer = setInterval( this.drawShapes, 50 );
+        this.drawTimer = setInterval( this.drawShapes, 50 );
+        this.colorTimer = setInterval( this.updateColors, 3000 );
+
+        // assign neighbors
+        setTimeout(() => {
+            let newShapes = {...this.state.shapes};
+
+            this.state.shapeOrder.forEach( k => {
+                let shape = newShapes[k];
+                let x = shape.x;
+                let y = shape.y;
+
+                let size3 = 3*this.state.size;
+                let sizeSqrt3 = Math.sqrt(3)*this.state.size;
+
+                let closestNeighbors = [
+                    this.findClosest((x - size3), (y - sizeSqrt3), 5),
+                    this.findClosest(x, (y - 2*sizeSqrt3), 5),
+                    this.findClosest((x + size3), (y - sizeSqrt3), 5),
+                    this.findClosest((x + size3), (y + sizeSqrt3), 5),
+                    this.findClosest(x, (y + 2*sizeSqrt3), 5),
+                    this.findClosest((x - size3), (y + sizeSqrt3), 5),
+                ];
+
+                newShapes[k].neighbors = closestNeighbors;
+            });
+
+            this.setState({
+                shapes: newShapes,
+            });
+
+        }, 100);
+
+
     }
 
     findNeighbors(shape) {
-        let x = shape.x;
-        let y = shape.y;
+        let nbrs = [];
+        shape.neighbors.forEach(nbrKey => {
+            nbrs.push(this.state.shapes[nbrKey]);
+        });
+        return nbrs;
+    }
 
-        let size3 = 3*this.state.size;
-        let sizeSqrt3 = Math.sqrt(3)*this.state.size;
+    updateColors() {
+        let newShapes = {...this.state.shapes};
+        this.state.shapeOrder.forEach( k => {
+            let s = this.state.shapes[k];
 
-        let closestNeighbors = [
-            this.state.shapes[this.findClosest((x - size3), (y - sizeSqrt3))],
-            this.state.shapes[this.findClosest(x, (y - 2*sizeSqrt3))],
-            this.state.shapes[this.findClosest((x + size3), (y - sizeSqrt3))],
-            this.state.shapes[this.findClosest((x + size3), (y + sizeSqrt3))],
-            this.state.shapes[this.findClosest(x, (y + 2*sizeSqrt3))],
-            this.state.shapes[this.findClosest((x - size3), (y + sizeSqrt3))],
-        ];
+            let n = this.findNeighbors(s).map(nbr => !!nbr ? nbr.color : null);
+            let grey = 'rgb(232,236,237)';
+            //let n = [grey, grey, grey, grey, grey, grey];
+            let colorGrey = 0;
+            let colorColor = 0;
+            if (!!n) {
 
-        return closestNeighbors;
+                (!n[0] || n[0] == grey ) ? colorGrey++ : colorColor++;
+                (!n[1] || n[1] == grey ) ? colorGrey++ : colorColor++;
+                (!n[2] || n[2] == grey ) ? colorGrey++ : colorColor++;
+                (!n[3] || n[3] == grey ) ? colorGrey++ : colorColor++;
+                (!n[4] || n[4] == grey ) ? colorGrey++ : colorColor++;
+                (!n[5] || n[5] == grey ) ? colorGrey++ : colorColor++;
+
+
+                if((colorColor >= 3 || colorColor <= 2) && s.color !==grey)
+                {
+                    newShapes[k].color = grey;
+                }            
+                
+                if(( colorColor === 2) && (!s.color || s.color === grey))
+                {
+                    newShapes[k].color = this.colors;
+                }
+            }
+
+            /**
+            
+            if (n[0] == grey && n[1] != grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey ) //1 grey 5 color, dies from overpopulation
+            {
+                s.color = grey;    
+            }
+            else if(n[0] == grey && n[1] == grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey) //2 grey 4 color, dies from overpopulation
+            {
+                s.color = grey; 
+            }
+            else if(n[0] == grey && n[1] != grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey)
+            {
+
+            }
+            else if(n[0] == grey && n[1] != grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey)
+            {
+
+            }
+            else if (n[0] == grey && n[1] != grey && n[2] != grey && n[3] != grey && n[4] != grey && n[5] != grey)
+            {
+
+            }
+
+            **/
+        });
+
+        this.setState({
+            time: this.state.time + 1,
+            shapes: newShapes
+        });
     }
 
     drawShapes() {
         let canvas = ReactDOM.findDOMNode(this.refs.hexCanvas);
         let context = canvas.getContext('2d');
         // sizing
-        
         canvas.width = this.state.canvasWidth;
         canvas.height = this.state.canvasHeight;
 
         this.setState({
             canvas,
             context,
-            time: this.state.time + 1,
         });
 
         this.state.shapeOrder.forEach( k => {
