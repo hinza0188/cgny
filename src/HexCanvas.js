@@ -27,7 +27,9 @@ class HexCanvas extends Component {
     }
 
     _onMouseMove(e) {
-        this.setState({ x:e.screenX, y:e.screenY});
+        let canvas = ReactDOM.findDOMNode(this.refs.hexCanvas);
+        let offset = canvas.getBoundingClientRect();
+        this.setState({ x:e.clientX, y:e.clientY-offset.top});
     }
 
     componentDidMount() {
@@ -69,6 +71,7 @@ class HexCanvas extends Component {
         let canvas = ReactDOM.findDOMNode(this.refs.hexCanvas);
         let context = canvas.getContext('2d');
         // sizing
+        
         canvas.width = this.state.canvasWidth;
         canvas.height = this.state.canvasHeight;
 
@@ -91,6 +94,7 @@ class HexCanvas extends Component {
                 <p>Mouse Coordinates: ({x}, {y})</p>
                 <canvas id="hex-canvas" ref="hexCanvas" width="100%" height="100%"
                     onMouseMove={this._onMouseMove.bind(this)}
+                    style={{position:"relative"}}
                 />
             </div>
         );
