@@ -28,6 +28,7 @@ class HexCanvas extends Component {
         this.updateColors = this.updateColors.bind(this);
         this.findClosest = this.findClosest.bind(this);
         this.findNeighbors = this.findNeighbors.bind(this);
+        this.assignNeighbors = this.assignNeighbors.bind(this);
     }
 
     _onClick(e) {
@@ -107,6 +108,12 @@ class HexCanvas extends Component {
             }
         }
 
+        this.state.shapeOrder.forEach( k => {
+            let s = shapes[k];
+            let neighbors = this.assignNeighbors(s);
+            s.neighbors = neighbors;
+        })
+
         this.setState({
             shapes,
             size,
@@ -120,7 +127,7 @@ class HexCanvas extends Component {
         this.colorTimer = setInterval( this.updateColors, 5000 );
     }
 
-    findNeighbors(shape) {
+    assignNeighbors(shape) {
         let x = shape.x;
         let y = shape.y;
 
@@ -128,15 +135,23 @@ class HexCanvas extends Component {
         let sizeSqrt3 = Math.sqrt(3)*this.state.size;
 
         let closestNeighbors = [
-            this.state.shapes[this.findClosest((x - size3), (y - sizeSqrt3))],
-            this.state.shapes[this.findClosest(x, (y - 2*sizeSqrt3))],
-            this.state.shapes[this.findClosest((x + size3), (y - sizeSqrt3))],
-            this.state.shapes[this.findClosest((x + size3), (y + sizeSqrt3))],
-            this.state.shapes[this.findClosest(x, (y + 2*sizeSqrt3))],
-            this.state.shapes[this.findClosest((x - size3), (y + sizeSqrt3))],
+            this.findClosest((x - size3), (y - sizeSqrt3)),
+            this.findClosest(x, (y - 2*sizeSqrt3)),
+            this.findClosest((x + size3), (y - sizeSqrt3)),
+            this.findClosest((x + size3), (y + sizeSqrt3)),
+            this.findClosest(x, (y + 2*sizeSqrt3)),
+            this.findClosest((x - size3), (y + sizeSqrt3)),
         ];
 
         return closestNeighbors;
+    }
+
+    findNeighbors(shape) {
+        let nbrs = [];
+        shape.neighbors.forEach(nbrKey => {
+            nbrs.push(this.state.shapes[nbrKey]);
+        });
+        return nbrs;
     }
 
     updateColors() {
@@ -144,10 +159,9 @@ class HexCanvas extends Component {
         this.state.shapeOrder.forEach( k => {
             let s = this.state.shapes[k];
 
-            // findneighbors is too slow will fix
-            //let n = this.findNeighbors(s);
+            let n = this.findNeighbors(s);
             let grey = 'rgb(232,236,237)';
-            let n = [grey, grey, grey, grey, grey, grey];
+            //let n = [grey, grey, grey, grey, grey, grey];
             let colorGrey = 0;
             let colorColor = 0;
             
